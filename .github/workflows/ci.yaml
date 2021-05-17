@@ -1,0 +1,33 @@
+name: ci
+on:
+  push:
+    branches:
+      - docker
+jobs:
+  Dockerfile:
+    env:
+      filename: Dockerfile
+      pattern: started
+      project: santander-phpinfo
+      registry: index.docker.io
+      sleep: "10"
+      tagname: ci
+      user: ganimedescolomar
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build
+        run: docker build --file ${filename} --no-cache --tag ${registry}/${user}/${project}:${tagname} .
+      - name: run
+        run: docker run --detach --name ${project} ${registry}/${user}/${project}:${tagname}
+      - name: test
+        run: while true ; do sleep ${sleep} ; docker logs ${project} 2>& 1 | grep ${pattern} && break ; done
+      - name: top
+        run: docker top ${project}
+      - name: stats
+        run: docker stats --no-stream ${project}
+      - name: inspect
+        run: docker inspect ${project}
+      - name: history
+        run: docker history ${registry}/${user}/${project}:${tagname}
