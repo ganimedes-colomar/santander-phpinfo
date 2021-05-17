@@ -30,4 +30,4 @@ jobs:
       - name: inspect
         run: docker inspect ${project}
       - name: history
-        run: docker history ${registry}/${user}/${project}:${tagname}
+        run: docker history ${registry}/${user}/${projectx}:${tagname}
