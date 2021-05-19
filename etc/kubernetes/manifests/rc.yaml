@@ -1,6 +1,11 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
+  selfLink:
+  resourceVersion:
+  uid:
+  creationTimestamp: 
+  generation:
   name: rc
 spec:
   replicas: 2
@@ -12,7 +17,25 @@ spec:
         app: santander-phpinfo
     spec:
       containers:
-        - name: php
+        -
+          name: php
           image: ganimedescolomar/santander-phpinfo
           ports:
-            - containerPort: 8080
+            -
+              containerPort: 8080
+              protocol: TCP
+          
+          env:
+            -
+              name: nombre_alumno
+              value: gani
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+status: {}
