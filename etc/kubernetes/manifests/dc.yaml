@@ -13,6 +13,13 @@ spec:
     spec:
       containers:
         -
+          args:
+            - -f
+            - index.php
+            - -S
+            - 0.0.0.0:8080
+          command:
+            - php
           name: php
           image: ganimedescolomar/santander-phpinfo
           ports:
@@ -28,6 +35,7 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           imagePullPolicy: Always
+      imagePullSecrets: docker-login
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst
