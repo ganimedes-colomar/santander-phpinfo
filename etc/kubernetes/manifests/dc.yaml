@@ -5,11 +5,11 @@ metadata:
 spec:
   replicas: 2
   selector:
-    app: santander-phpinfo
+    app: santander-phpinfo-dc
   template:
     metadata:
       labels:
-        app: santander-phpinfo
+        app: santander-phpinfo-dc
     spec:
       containers:
         -
