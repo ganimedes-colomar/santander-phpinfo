@@ -1,0 +1,11 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: santander-phpinfo-route
+spec:
+  host: gani-phpinfo.ganimedes-colomar.com
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: santander-phpinfo-svc
