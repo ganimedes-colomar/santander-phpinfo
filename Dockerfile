@@ -1,5 +1,5 @@
 FROM alpine
 RUN apk add php
-COPY src /app/
+VOLUME 
 ENTRYPOINT ["php"]
 CMD ["index.php"]
