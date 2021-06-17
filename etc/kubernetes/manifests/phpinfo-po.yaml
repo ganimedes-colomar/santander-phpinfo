@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: santander-phpinfo-po
+  labels:
+    app: santander-phpinfo
 spec:
   containers:
     -
