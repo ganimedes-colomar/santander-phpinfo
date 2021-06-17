@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: santander-phpinfo-po
+spec:
+  containers:
+    -
+      name: santander-phpinfo-container
+      image: ganimedescolomar/santander-phpinfo
+      command:
+        -
+          /usr/bin/php
+      workingDir: /app/
+      args:
+        -
+          -f
+        -
+          index.php
+        -
+          -S
+        -
+          0.0.0.0:8080
