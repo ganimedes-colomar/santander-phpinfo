@@ -22,5 +22,5 @@ jobs:
         run: |
             while true; do
                     sleep 10;
-                    docker logs test 2>& 1 | grep 'PHP .* Development Server .* started' && break
+                    docker logs santander-phpinfo 2>& 1 | grep 'PHP .* Development Server .* started' && break
             done;
