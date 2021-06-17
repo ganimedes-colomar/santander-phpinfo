@@ -16,7 +16,7 @@ jobs:
         run: docker build -t santander-phpinfo:test -f Dockerfile ./
       -
         name: docker run
-        run: docker run -d --name santander-phpinfo -v ./src/:/app/ --entrypoint php santander-phpinfo:test -f index.php -S 0.0.0.0:8080
+        run: docker run -d --name santander-phpinfo -v $PWD/src/:/app/ --entrypoint php santander-phpinfo:test -f index.php -S 0.0.0.0:8080
       -
         name: docker logs
         run: |
