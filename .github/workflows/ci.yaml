@@ -1,0 +1,26 @@
+name: ci
+on:
+  push:
+    branches:
+      -
+        docker150621
+jobs:
+  Dockerfile:
+    runs-on: ubuntu-18.04
+    steps:
+      -
+        name: checkout
+        uses: actions/checkout@v2
+      -
+        name: docker build
+        uses: docker build -t santander-phpinfo:test -f Dockerfile .
+      -
+        name: docker run
+        uses: docker run -d --name santander-phpinfo --entrypoint php santander-phpinfo:test -f index.php -S 0.0.0.0:8080
+      -
+        name: docker logs
+        uses: |
+            while true; do
+                    sleep 10;
+                    docker logs test 2>& 1 | grep 'PHP .* Development Server .* started' && break
+            done;
