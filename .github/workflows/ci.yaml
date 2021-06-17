@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
       -
         name: docker build
-        uses: docker build -t santander-phpinfo:test -f Dockerfile .
+        uses: docker build -t santander-phpinfo:test -f Dockerfile ./
       -
         name: docker run
         uses: docker run -d --name santander-phpinfo --entrypoint php santander-phpinfo:test -f index.php -S 0.0.0.0:8080
