@@ -46,3 +46,14 @@ jobs:
                     sleep ${sleep};
                     curl localhost:${port_node} | grep "${pattern}" && break;
             done;
+      - name: docker swarm init
+        run: docker swarm init
+      - name: docker stack deploy
+        run: docker stack deploy --compose-file docker-compose.yaml ${project}
+      - name: docker service logs
+        run: |
+            while true; do
+                    sleep ${sleep};
+                    docker service logs ${project}_${project};
+                    docker service logs ${project}_${project} 2>& 1 | grep "${pattern}" && break;
+            done;
