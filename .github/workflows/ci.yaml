@@ -55,7 +55,8 @@ jobs:
       - name: docker service ls
         run: |
             while true; do
-                sleep 10;
+                sleep ${sleep};
+                docker stack ps ${project};
                 docker service ls;
                 docker service ls | grep "${project}.*replicated.*\([0-9]\)/\1.*${port_container}" && break;
             done;
