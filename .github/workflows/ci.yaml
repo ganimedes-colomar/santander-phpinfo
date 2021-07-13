@@ -46,6 +46,8 @@ jobs:
                     sleep ${sleep};
                     curl localhost:${port_node} | grep "${pattern}" && break;
             done;
+      - name: provisioning
+        run: cp -rv ${PWD}/${sourcepoint}/ /tmp/
       - name: docker swarm init
         run: docker swarm init
       - name: docker stack deploy
@@ -54,6 +56,7 @@ jobs:
         run: |
             while true; do
                 sleep 10;
+                docker service ls;
                 docker service ls | grep "${project}.*replicated.*\([0-9]\)/\1.*${port_container}" && break;
             done;
       - name: docker service logs
