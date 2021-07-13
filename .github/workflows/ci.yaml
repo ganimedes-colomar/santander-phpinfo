@@ -30,21 +30,19 @@ jobs:
         run: docker container run --detach --entrypoint ${entrypoint} --name ${project} --publish ${port_node}:${port_container} --user ${user} --volume ${PWD}/${sourcepoint}:${mountpoint}:ro --workdir ${mountpoint} ${registry}/${username}/${project}:${tagname} ${arguments}
       - name: docker logs
         run: |
-            while true; do
+            while true; do;
                     sleep ${sleep};
                     docker container logs ${project} 2>& 1 | grep "${pattern}" && break;
             done;
       - name: internal test
         run: |
-            while true; do
+            while true; do;
                     sleep ${sleep};
-                    docker container exec ${project} curl localhost:${port_container};
                     docker container exec ${project} curl localhost:${port_container} | grep "${pattern}" && break;
             done;
       - name: external test
         run: |
-            while true; do
+            while true; do;
                     sleep ${sleep};
-                    curl localhost:${port_node}
                     curl localhost:${port_node} | grep "${pattern}" && break;
             done;
