@@ -1,0 +1,30 @@
+networks:
+  santander-phpinfo:
+    internal: false
+services:
+  santander-phpinfo:
+    deploy:
+      mode: replicated
+      placement:
+        constraints:
+        - node.role == worker
+      replicas: 2
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 100m
+        reservations:
+          cpus: "0.1"
+          memory: 100m
+    healthcheck:
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      test: php -r "print file_get_contents('http://localhost:8080/');"
+      timeout: 1s
+    image: ganimedescolomar/santander-phpinfo:2021-07-13
+    networks:
+    - santander-phpinfo
+    ports:
+    - 80:8080
+version: "3.8"    
