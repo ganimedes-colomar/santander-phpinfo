@@ -32,20 +32,20 @@ jobs:
       - name: docker logs
         run: |
             while true; do
-                    sleep ${sleep};
-                    docker container logs ${project} 2>& 1 | grep "${pattern}" && break;
+                sleep ${sleep};
+                docker container logs ${project} 2>& 1 | grep "${pattern}" && break;
             done;
       - name: internal test
         run: |
             while true; do
-                    sleep ${sleep};
-                    docker container exec ${project} curl localhost:${port_container} | grep "${pattern}" && break;
+                sleep ${sleep};
+                docker container exec ${project} curl localhost:${port_container} | grep "${pattern}" && break;
             done;
       - name: external test
         run: |
             while true; do
-                    sleep ${sleep};
-                    curl localhost:${port_node} | grep "${pattern}" && break;
+                sleep ${sleep};
+                curl localhost:${port_node} | grep "${pattern}" && break;
             done;
       - name: provisioning
         run: cp -rv ${PWD}/${sourcepoint}/ /tmp/
@@ -54,6 +54,7 @@ jobs:
       - name: docker stack deploy
         run: |
             sed --in-place /node.role/s/worker/manager/ ${compose};
+            docker container ls;
             docker stack deploy --compose-file ${compose} ${project};
       - name: docker service ls
         run: |
@@ -64,6 +65,12 @@ jobs:
       - name: docker service logs
         run: |
             while true; do
-                    sleep ${sleep};
-                    docker service logs ${project}_${project} 2>& 1 | grep "${pattern}" && break;
+                sleep ${sleep};
+                docker service logs ${project}_${project} 2>& 1 | grep "${pattern}" && break;
+            done;
+      - name: external test
+        run: |
+            while true; do
+                sleep ${sleep};
+                curl localhost:${port_node} | grep "${pattern}" && break;
             done;
