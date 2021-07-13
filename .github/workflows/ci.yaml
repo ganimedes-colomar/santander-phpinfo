@@ -55,7 +55,6 @@ jobs:
       - name: docker stack deploy
         run: |
             sed --in-place /node.role/s/worker/manager/ ${compose};
-            docker container ls;
             docker stack deploy --compose-file ${compose} ${project};
       - name: docker service ls
         run: |
