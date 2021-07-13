@@ -3,6 +3,11 @@ networks:
     internal: false
 services:
   santander-phpinfo:
+    command:
+      - -f
+      - index.php
+      - -S
+      - 0.0.0.0:8080
     deploy:
       mode: replicated
       placement:
@@ -16,6 +21,7 @@ services:
         reservations:
           cpus: "0.1"
           memory: 100m
+    entrypoint: /usr/bin/php
     healthcheck:
       interval: 10s
       retries: 3
@@ -27,4 +33,8 @@ services:
     - santander-phpinfo
     ports:
     - 80:8080
-version: "3.8"    
+    user: nobody
+    volumes:
+      - /tmp/src/:/src/:ro
+    working_dir: /src/
+version: "3.8"
