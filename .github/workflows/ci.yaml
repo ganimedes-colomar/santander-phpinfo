@@ -50,6 +50,12 @@ jobs:
         run: docker swarm init
       - name: docker stack deploy
         run: docker stack deploy --compose-file docker-compose.yaml ${project}
+      - name: docker service ls
+        run: |
+            while true; do
+                sleep 10;
+                docker service ls | grep "${project}.*replicated.*\([0-9]\)/\1.*${port_container}" && break;
+            done;                                                                 ;
       - name: docker service logs
         run: |
             while true; do
