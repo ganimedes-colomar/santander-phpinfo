@@ -47,6 +47,7 @@ jobs:
                 sleep ${sleep};
                 curl localhost:${port_node} | grep "${pattern}" && break;
             done;
+            docker container kill ${project};
       - name: provisioning
         run: cp -rv ${PWD}/${sourcepoint}/ /tmp/
       - name: docker swarm init
