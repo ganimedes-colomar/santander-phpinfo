@@ -71,7 +71,8 @@ jobs:
             done;
       - name: external test
         run: |
+            host=$( ip r | grep -v docker | awk '/kernel/{ print $9 }' )
             while true; do
                 sleep ${sleep};
-                curl localhost:${port_node} | grep "${pattern}" && break;
+                curl ${host}:${port_node} | grep "${pattern}" && break;
             done;
