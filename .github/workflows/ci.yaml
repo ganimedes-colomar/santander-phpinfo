@@ -7,6 +7,7 @@ jobs:
   Dockerfile:
     env:
       arguments: "-f index.php -S 0.0.0.0:8080"
+      compose: docker-compose.yaml
       entrypoint: /usr/bin/php
       filename: Dockerfile
       mountpoint: /src/
@@ -51,7 +52,9 @@ jobs:
       - name: docker swarm init
         run: docker swarm init
       - name: docker stack deploy
-        run: docker stack deploy --compose-file docker-compose.yaml ${project}
+        run: |
+            sed --in-place /node.role/s/worker/manager/ ${compose};
+            docker stack deploy --compose-file ${compose} ${project};
       - name: docker service ls
         run: |
             while true; do
