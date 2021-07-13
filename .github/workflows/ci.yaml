@@ -1,0 +1,50 @@
+name: ci
+on:
+  push:
+    branches:
+      - 2021-07-13
+jobs:
+  Dockerfile:
+    env:
+      arguments: "-f index.php -S 0.0.0.0:8080"
+      entrypoint: /usr/bin/php
+      filename: Dockerfile
+      mountpoint: /src/
+      pattern: PHP
+      port_container: '8080'
+      port_node: '80'
+      project: santander-phpinfo
+      registry: index.docker.io
+      sleep: "10"
+      sourcepoint: src/
+      tagname: ci
+      user: nobody
+      username: ganimedescolomar
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build
+        run: docker image build --file ${filename} --no-cache --tag ${registry}/${username}/${project}:${tagname} .
+      - name: docker run
+        run: docker container run --detach --entrypoint ${entrypoint} --name ${project} --publish ${port_node}:${port_container} --user ${user} --volume ${PWD}/${sourcepoint}:${mountpoint}:ro --workdir ${mountpoint} ${registry}/${username}/${project}:${tagname} ${arguments}
+      - name: docker logs
+        run: |
+            while true; do
+                    sleep ${sleep};
+                    docker container logs ${project} 2>& 1 | grep "${pattern}" && break;
+            done;
+      - name: internal test
+        run: |
+            while true; do
+                    sleep ${sleep};
+                    docker container exec ${project} curl localhost:${port_container};
+                    docker container exec ${project} curl localhost:${port_container} | grep "${pattern}" && break;
+            done;
+      - name: external test
+        run: |
+            while true; do
+                    sleep ${sleep};
+                    curl localhost:${port_node}
+                    curl localhost:${port_node} | grep "${pattern}" && break;
+            done;
