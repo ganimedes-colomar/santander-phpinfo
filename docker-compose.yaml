@@ -1,6 +1,6 @@
 networks:
   santander-phpinfo:
-    internal: false
+    internal: true
 services:
   santander-phpinfo:
     command:
