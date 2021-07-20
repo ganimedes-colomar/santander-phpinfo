@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: santander-phpinfo-rs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: santander-phpinfo-label
+  template:
+    metadata:
+      labels:
+        app: santander-phpinfo-label
+    spec:
+      containers:
+        -
+          args:
+            - -f
+            - index.php
+            - -S
+            - 0.0.0.0:8080
+          command:
+            - /usr/bin/php
+          image: ganimedescolomar/santander-phpinfo:latest
+          name: santander-phpinfo-container
+          volumeMounts:
+            -
+              mountPath: /santander-phpinfo-volume/
+              name: santander-phpinfo-volume
+              readOnly: true
+          workingDir: /santander-phpinfo-volume/santander-phpinfo/src/
+      initContainers:
+        -
+          args:
+            - git clone https://github.com/ganimedes-colomar/santander-phpinfo && cd santander-phpinfo/ && git checkout 2021-07-13 && git pull
+          command:
+            - /bin/sh
+            - -c
+          image: alpine/git:latest
+          name: santander-phpinfo-init
+          volumeMounts:
+            -
+              mountPath: /santander-phpinfo-volume/
+              name: santander-phpinfo-volume
+              readOnly: false
+          workingDir: /santander-phpinfo-volume/
+      volumes:
+        -
+          emptyDir: {}
+          name: santander-phpinfo-volume
