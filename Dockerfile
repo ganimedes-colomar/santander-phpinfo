@@ -7,5 +7,5 @@ ENV owner Ganimedes
 EXPOSE "8080"
 USER nobody
 # /var/lib/docker/volumes/xxx/_data/:/src/
-VOLUME /src/
+VOLUME /src/index.php
 WORKDIR /src/
